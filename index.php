@@ -16,7 +16,7 @@
 <body>
 	<form action="select_form.php" method="post" id="selectForm">
 		<label>Center:
-			<select id="callCenter" name="callCenter">
+			<select id="callCenter" class="selectItem" name="callCenter">
 					<option disabled selected>Choose call center</option>
 					<?php foreach($centers as $key => $center): ?>
 						<option value="<?= $key ?>"><?= $center; ?></option>
@@ -24,10 +24,10 @@
 			</select>
 		</label><br/>
 		<label>Desk:
-			<select id="desk" name="desk"></select>
+			<select id="desk" class="selectItem" name="desk"></select>
 		</label><br/>
 		<label>Team:
-			<select id="team" name="team"></select>
+			<select id="team" class="selectItem" name="team"></select>
 		</label><br/>
 		<label>Sales:
 			<select id="sales" name="user"></select>

@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
 	let selectForm = $('#selectForm');
+	let selectElems = $('.selectItem');
 
 	$('select').css("width", "150px");
 
@@ -19,66 +20,26 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#callCenter').change(function() {
-
-		$('#desk').html('');
-		$('#team').html('');
-		$('#sales').html('');
-
+	selectElems.on('change', function() {
 		$.ajax({type: 'GET', url: 'select_form.php',
 				data: {
-					action: 'getDesk',
-					id: $('#callCenter').val()
-			},
-			success: function (response) {
-				let data = JSON.parse(response);
-				appendOptions(data['desks'], $('#desk'));
-				appendOptions(data['teams'], $('#team'));
-				appendOptions(data['sales'], $('#sales'));
-			},
-			error: function() {
-				alert("Error");
-			}
-		});
-	});
-
-	$('#desk').change(function() {
-
-		$('#team').html('');
-		$('#sales').html('');
-
-		$.ajax({type: 'GET', url: 'select_form.php',
-				data: {
-					action: 'getTeam',
-					id: $('#desk').val()
-			},
-			success: function (response) {
-				let data = JSON.parse(response);
-				appendOptions(data['teams'], $('#team'));
-				appendOptions(data['sales'], $('#sales'));
-			},
-			error: function() {
-				alert("Error");
-			}
-		});
-	});
-
-	$('#team').change(function() {
-
-		$('#sales').html('');
-
-		$.ajax({type: 'GET', url: 'select_form.php',
-				data: {
-					action: 'getSales',
-					id: $('#team').val()
-			},
-			success: function (response) {
-				let data = JSON.parse(response);
-				appendOptions(data['sales'], $('#sales'));
-			},
-			error: function() {
-				alert("Error");
-			}
+					action: this.id,
+					value: this.value
+				},
+				success: function (response) {
+					let data = JSON.parse(response);
+					if (data['error']) {
+						alert(data['error']);
+					} else {
+						$.each(data, function(key, value) {
+							$('#'+key+'').html('');
+							appendOptions(value, $('#'+key+''));
+						});
+					}
+				},
+				error: function () {
+					alert('Error');
+				}
 		});
 	});
 
@@ -87,5 +48,4 @@ $(document).ready(function() {
 			elem.append($('<option>', {value: key, text: value}));
 		});
 	}
-
 });
